@@ -13,6 +13,15 @@ class AbstractMelonOrder(object):
         self.shipped = False
         self.country_code = country_code
 
+        if self.qty > 100:
+            raise TooManyMelonsError("Too many melons!")
+
+        try:
+            if self.qty > 100:
+                raise TooManyMelonsError("Too many melons!")
+        except TooManyMelonsError:
+            print "booooooo too many melons"
+
     def get_base_price(self):
         """Return base price"""
 
@@ -61,8 +70,12 @@ class AbstractMelonOrder(object):
 
 
 
+class TooManyMelonsError(ValueError):
+    """Error handling for TooManyMelonsError"""
+
+
 class DomesticMelonOrder(AbstractMelonOrder):
-     """A domestic (in the US) melon order."""
+    """A domestic (in the US) melon order."""
     def __init__(self, species, qty):
         super(DomesticMelonOrder, self).__init__(species, qty)
         self.order_type = "domestic"
